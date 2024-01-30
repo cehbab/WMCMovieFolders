@@ -1,0 +1,155 @@
+Ratings:
+  Country: 'US'
+    Ratings: 'R'; 'NR'; 'PG-13'; 'PG'; 'NC-17'; 'G';
+  Country: 'DE'
+    Ratings: '16'; '12'; '18'; '0'; '6';
+  Country: 'GB'
+    Ratings: '15'; '12A'; '12'; 'PG'; '18'; 'U';
+  Country: 'GR'
+    Ratings: 'Îš-18'; 'Îš-15'; '15'; 'Îš-12'; '13'; 'PG'; 'K-16'; 'K12'; 'Îš'; '12'; 'K-12'; '7+'; '16'; 'K18'; 'Îš-13'; '18'; 'K15'; 'K-17'; '16+'; 'K-15'; 'G'; 'PG-13'; '17'; '13+'; 'K-13'; 'K'; 'U'; 'K-8'; 'A-18'; 'R'; '18+';
+  Country: 'AU'
+    Ratings: 'M'; 'MA15+'; 'PG'; 'MA 15+'; 'R 18+'; 'R18+'; 'G';
+  Country: 'BR'
+    Ratings: '14'; '16'; 'L'; '12'; '18'; '10'; '12 anos'; '16 anos'; 'e 12'; '15'; 'e 14'; 'e 10'; '16 Anos'; 'Livre'; '14 anos';
+  Country: 'DK'
+    Ratings: '15'; '11'; '7'; 'A'; 'R'; 'NR'; '11 Ã¥r'; 't.f.a.'; '12'; 't.o.15';
+  Country: 'ES'
+    Ratings: '12'; '16'; 'A'; '7'; '18'; 'R'; 'APTA'; '13'; '+7'; 'TP'; '7i'; 'ATP'; 'Ai'; 'PG-13';
+  Country: 'FR'
+    Ratings: '10'; '16'; 'U'; '12'; 'TP'; '18';
+  Country: 'HU'
+    Ratings: '16'; '18'; '12'; 'KN'; '16 Ã©ven aluliak szÃ¡mÃ¡ra nem ajÃ¡nlott'; '6'; 'X'; '12 Ã©ven aluliaknak nem ajÃ¡nlott'; 'R'; '18 Ã©ven aluliak szÃ¡mÃ¡ra nem ajÃ¡nlott';
+  Country: 'IE'
+    Ratings: '15A'; '15'; '12A'; '18'; '16'; 'PG'; '12'; 'G'; 'R'; '15PG'; '12PG'; 'PG-13';
+  Country: 'IT'
+    Ratings: 'T'; 'VM14'; '6+'; '14+'; 'VM18'; 'Kids+13'; '18+'; 'Kids+16';
+  Country: 'KR'
+    Ratings: '15'; '12'; '15ì„¸ì´ìƒê´€ëžŒê°€'; '18'; '15ì„¸ ì´ìƒ ê´€ëžŒê°€'; 'ALL'; 'All'; '19'; 'ì²­ì†Œë…„ ê´€ëžŒë¶ˆê°€'; '15ì„¸ ê´€ëžŒê°€'; '12ì„¸ ì´ìƒ ê´€ëžŒê°€'; 'ì²­ì†Œë…„ê´€ëžŒë¶ˆê°€'; '12ì„¸ì´ìƒê´€ëžŒê°€'; 'ì „ì²´ê´€ëžŒê°€';
+  Country: 'NL'
+    Ratings: '16'; '12'; '6'; '9'; 'AL'; 'NR'; '14';
+  Country: 'PT'
+    Ratings: 'M/14'; 'M/12'; 'M/16'; 'M/18'; '16'; 'M/6'; 'M/12Q'; 'e 16'; '12'; 'M/16Q'; 'M12'; 'M16'; 'e 10'; 'e Livre'; 'PG-13'; 'e 12'; 'e 14';
+  Country: 'RU'
+    Ratings: '16+'; '18+'; '12+'; 'R'; '6+'; '0+'; 'PG-13';
+  Country: 'SE'
+    Ratings: '15'; '11'; '7'; '15 Ã…r'; 'Btl'; 'FrÃ¥n 15 Ã¥r'; '7 Ã…r'; '11 Ã…r'; 'PG-13'; 'R';
+  Country: 'SG'
+    Ratings: 'PG13'; 'NC-16'; 'PG'; 'M18'; 'R21'; 'NC16'; '9'; 'R21 (edited)';
+  Country: 'TH'
+    Ratings: '15'; 'à¹€à¸£à¸— R'; 'à¸™15+'; 'à¸— à¸—à¸±à¹ˆà¸§à¹„à¸›'; 'G'; '18'; '13'; 'à¸™ 13+'; '18+'; 'PG-13'; '15+'; 'à¸™.13+'; 'R'; 'PG'; 'à¸™ 15+'; 'à¸™ 18+'; 'à¸—'; '13+'; 'à¸™13+'; 'à¸—à¸±à¹ˆà¸§à¹„à¸›'; '18 +';
+  Country: 'AR'
+    Ratings: '13'; '16'; '+16'; '18'; 'ATP'; '+18'; '+13'; 'Atp'; 'PG'; '12'; '20'; 'AM18';
+  Country: 'CA'
+    Ratings: '13+'; '14A'; 'PG'; 'G'; '18A'; 'R'; 'A';
+  Country: 'FI'
+    Ratings: 'K-16'; 'K-15'; 'K-18'; '16'; 'K-12'; 'S'; 'Night Visions Film Festival'; 'K-7'; 'K-13'; '12'; 'K-11'; '18'; '2'; '11'; 'K-14'; 'K-10';
+  Country: 'IS'
+    Ratings: '14'; '16'; 'L'; '10'; '18'; '12'; '9';
+  Country: 'MX'
+    Ratings: 'B-15'; '18'; 'B'; 'B15'; 'C'; 'A'; 'NC-17'; 'AA'; 'D'; '13';
+  Country: 'NO'
+    Ratings: '15'; '12'; '18'; '9'; '11 Ã¥r'; 'A'; '6'; '11'; '15 Ã…r'; '11 Ã…r'; '11-'; '15 Ã¥r'; '18-';
+  Country: 'NZ'
+    Ratings: 'M'; '16'; 'R18'; 'R16'; '18'; 'PG'; '13'; 'R'; 'R13'; 'G';
+  Country: 'HK'
+    Ratings: 'IIB'; 'IIA'; 'III'; '18+'; '16+'; 'II'; 'I'; '13';
+  Country: 'MY'
+    Ratings: '18PL'; 'P13'; 'U'; '18SG'; 'PG-13'; '18';
+  Country: 'PH'
+    Ratings: 'R-13'; 'R-18'; 'PG'; 'R-16'; 'PG-13'; 'G'; '6';
+  Country: 'PL'
+    Ratings: '12'; '18'; '12+'; '14+'; '16'; '-'; '15'; 'PG-13'; 'od 15 lat'; 'od 12 lat'; '13';
+  Country: 'TR'
+    Ratings: '13+'; '18+'; '16+'; '15'; '10A'; '13A'; '15+'; 'R'; '7+'; 'PG'; 'PG-13'; '10+'; '15A';
+  Country: 'TW'
+    Ratings: 'PG-12'; 'ä¿è­·ç´š'; '6+'; 'R-12'; 'é™åˆ¶ç´š'; '18+'; 'R-15'; '0+'; '12+'; 'è¼”12ç´š'; 'è¼”12'; 'è¼”15'; 'è¼”å°Ž12æ­²ç´š'; 'è¼”å°Ž15æ­²ç´š'; '13+'; 'è¼”15+'; 'R-18'; 'æ™®éç´š'; '15+'; 'æ™®é€šç´š'; '16+'; '18'; 'è¼”å°Žç´š'; 'è¼”15ç´š'; '14'; 'è¼”å°Ž12ç´š'; 'PG 12'; 'GP';
+  Country: 'UA'
+    Ratings: '16'; '12+'; '18+'; '18'; '16+'; 'PG-13'; '0+'; '12'; 'R'; 'ZA';
+  Country: 'CH'
+    Ratings: '14'; '16'; '12'; '10'; '18'; '8'; '0'; 'Locarno Film Festival'; '6'; 'R';
+  Country: 'LT'
+    Ratings: 'N-13'; 'N-16'; 'N-18'; 'N-7'; 'NR'; 'V';
+  Country: 'RO'
+    Ratings: 'Vertical Entertainment'; 'NC-15'; '16+'; 'A.P. - 12'; 'N - 15'; 'AG'; 'AP-12'; '+15'; '15'; 'N-15'; '14'; 'PG-13';
+  Country: 'SK'
+    Ratings: '15'; 'U'; '12'; '18'; '7';
+  Country: 'BE'
+    Ratings: '12'; '16'; 'KNT/ENA'; 'ea'; 'KT/EA'; 'R'; 'EA'; '14'; 'KT';
+  Country: 'BG'
+    Ratings: 'C'; 'D'; 'B'; 'c'; 'G'; 'A'; '12+'; 'PG-13'; 'R';
+  Country: 'AE'
+    Ratings: '18+'; 'PG-15'; '15+'; 'PG'; '16+'; '18TC'; 'PG-13';
+  Country: 'AT'
+    Ratings: '14'; '10'; '16'; '12'; '6';
+  Country: 'CZ'
+    Ratings: '18'; '15'; '12'; '12+'; '15+'; 'U'; '18+'; '16+'; 'MP'; 'R'; '6+'; '12PG'; 'MlÃ¡deÅ¾i pÅ™istupnÃ½';
+  Country: 'IN'
+    Ratings: 'A'; 'UA'; 'U'; 'U/A 13+';
+  Country: 'JP'
+    Ratings: 'R-15'; 'R15+'; 'G'; 'PG12'; 'R18+'; '18'; 'R15'; 'PG-12'; 'NR'; 'R-18'; '15'; 'R';
+  Country: 'PE'
+    Ratings: '14'; '18'; 'PT'; 'M14'; 'Apt'; 'APT';
+  Country: 'IL'
+    Ratings: '12'; '16'; 'All'; 'R'; 'PG-13'; '×”×•×ª×¨ ×œ×‘× ×™ 16 ×•×ž×¢×œ×”'; '×ž×•×’×‘×œ ×œ×¦×¤×™×™×” ×ž×’×™×œ 14 ×•×ž×¢×œ×”'; '18+'; '×œ×œ× ×”×¤×¦×” ×œ×‘×ª×™ ×”×§×•×œ× ×•×¢'; '×”×•×ª×¨ ×œ×›×œ'; '14'; '18'; '×”×•×ª×¨ ×œ×‘× ×™ 12 ×•×ž×¢×œ×”'; '×”×•×ª×¨ ×œ×‘× ×™ 14 ×•×ž×¢×œ×”'; '×”×•×ª×¨ ×œ×›×œ ×”×’×™×œ××™×'; 'PG'; '×ž×•×’×‘×œ ×ž×’×™×œ 14'; '12+'; '×”×•×ª×¨ ×œ×‘× ×™ 18 ×•×ž×¢×œ×”'; '×”×•×ª×¨ ×œ×‘× ×™ 10 ×•×ž×¢×œ×”'; '13+'; '8+'; '16+'; '+16';
+  Country: 'PR'
+    Ratings: 'PG-13'; 'R'; 'PG';
+  Country: 'ZA'
+    Ratings: '16'; 'A'; 'PG'; '13'; '18'; 'R'; 'PG-13'; '10-12PG'; '10-12'; '10'; '7-9'; '10-12PG V';
+  Country: 'ID'
+    Ratings: '17+'; '13+'; '18+'; '21+'; 'Dewasa 17+'; 'Remaja 13+'; 'D17+'; 'SU'; 'D'; 'Remaja'; '21';
+  Country: 'HR'
+    Ratings: '12'; '18'; '16'; '15';
+  Country: 'VI'
+    Ratings: 'PG-13'; 'R'; 'PG';
+  Country: 'LV'
+    Ratings: '16+'; '12+';
+  Country: 'TT'
+    Ratings: 'PG-13'; '14+'; '27';
+  Country: 'CO'
+    Ratings: 'PG-13'; '12'; '15'; '18'; 'T'; '7';
+  Country: 'CL'
+    Ratings: '14'; 'TE'; '18'; 'Y7'; 'TE+7';
+  Country: 'KZ'
+    Ratings: 'Ð•18'; 'Ð‘14'; 'Ð•16'; 'Ð‘Ð'; '14+'; '12';
+  Country: 'VN'
+    Ratings: 'C18'; 'C13'; 'C16'; 'P'; '18+';
+  Country: 'EC'
+    Ratings: '18'; 'ALL'; '12';
+  Country: 'EG'
+    Ratings: '18+'; 'PG-13'; '28';
+  Country: 'MP'
+    Ratings: '15';
+  Country: 'AS'
+    Ratings: 'M13'; '13A'; '12+';
+  Country: 'MT'
+    Ratings: '12'; 'PG';
+  Country: 'LU'
+    Ratings: '16'; '12'; '6';
+  Country: 'EE'
+    Ratings: 'MS12'; 'K-14'; 'K12';
+  Country: 'MO'
+    Ratings: 'B'; 'D'; 'C'; '16';
+  Country: 'VE'
+    Ratings: 'PG-13';
+  Country: 'SA'
+    Ratings: 'R12';
+  Country: 'UY'
+    Ratings: '10'; '16';
+  Country: 'KP'
+    Ratings: '15ì„¸ ì´ìƒ ê´€ëžŒê°€';
+  Country: 'LB'
+    Ratings: 'PG-13';
+  Country: 'CN'
+    Ratings: 'III';
+  Country: 'AL'
+    Ratings: '21';
+  Country: 'AZ'
+    Ratings: '15';
+  Country: 'RS'
+    Ratings: '12';
+  Country: 'NA'
+    Ratings: 'B';
+  Country: 'QA'
+    Ratings: 'Qatar Cinemas';
+  Country: 'SU'
+    Ratings: '16+';

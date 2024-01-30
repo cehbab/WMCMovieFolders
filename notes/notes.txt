@@ -1,0 +1,13 @@
+wmc data is based on current user running wmc.
+
+%APPDATA%\Roaming\Microsoft\eHome
+
+
+Movie folder has a HARDLINK to original movie file.
+Movie folder contains ...dvdid.xml file that contains a file name, that must match files in %APPDATA%\Microsoft\eHome\dvd... folders
+
+eg;
+mklink /H F:\Library\Movies\Zoolander\Zoolander.mp4 "F:\Library\Original\Zoolander (2001).mp4"
+
+
+For meddia extenders, they each have their own device-user APPDATA folder on the server they extend from
