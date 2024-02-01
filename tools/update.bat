@@ -7,16 +7,26 @@ DIR "%ARCHIVE%"
 ECHO.
 
 PUSHD "%FOLDER%"
-REM CD
-FOR /D %%i in (*) DO (ENDLOCAL
-  IF NOT "%%i" == "Public" (CALL :UPDATE %%i) ELSE (ECHO "Skipping %%i")
+IF NOT "%1" == "" (
+  IF EXIST "%1" (CALL :UPDATE "%1") ELSE (
+    ECHO Missing %1
+    ECHO Available:
+    FOR /D %%i in (*) DO (ENDLOCAL
+      IF NOT "%%i" == "Public" (ECHO %%i)
+    )
+  )
+) ELSE (
+  FOR /D %%i in (*) DO (ENDLOCAL
+    IF NOT "%%i" == "Public" (CALL :UPDATE %%i) ELSE (ECHO Skipping %%i)
+  )
 )
 POPD
 PAUSE
 EXIT /b
 
+
 :UPDATE
-PUSHD "%*\AppData\Roaming\Microsoft\eHome"
+PUSHD "%1\AppData\Roaming\Microsoft\eHome"
 CD
 FOR %%i in (DvdCoverCache, DvdInfoCache) DO ( RMDIR /S /Q "%%i" )
 TAR -xf "%ARCHIVE%"
