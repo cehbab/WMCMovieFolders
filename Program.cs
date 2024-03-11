@@ -794,6 +794,9 @@ namespace WMCMovieFolders
             {
                 switch (c)
                 {
+                    case '‽':
+                        buf.Append('?');
+                        break;
                     case 'ː':
                         buf.Append(':');
                         break;
@@ -923,11 +926,19 @@ namespace WMCMovieFolders
                     // check for 'name' match
                     bool match = false;
                     for (int i = 3; i < args.Length; i++)
-                        if (args[i].Equals(name, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        string single = args[i];
+                        if (File.Exists(single))
+                        {
+                            // trim filepath back top movie title
+                            single = Path.GetFileNameWithoutExtension(single);
+                        }
+                        if (single.Equals(name, StringComparison.CurrentCultureIgnoreCase))
                         {
                             match = true;
                             break;
                         }
+                    }
                     if (!match)
                         continue;
                 }

@@ -10,4 +10,4 @@ eg;
 mklink /H F:\Library\Movies\Zoolander\Zoolander.mp4 "F:\Library\Original\Zoolander (2001).mp4"
 
 
-For meddia extenders, they each have their own device-user APPDATA folder on the server they extend from
+For media extenders, they each have their own device-user APPDATA folder on the server they extend from
