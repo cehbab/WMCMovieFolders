@@ -2,6 +2,7 @@
 
 SET ARCHIVE=\\server\movies\library\eHome.zip
 SET FOLDER=\\192.168.0.201\C$\Users
+REM SET FOLDER=C:\Users
 
 DIR "%ARCHIVE%"
 ECHO.
