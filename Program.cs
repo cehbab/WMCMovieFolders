@@ -8,7 +8,9 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Security.Authentication;
+using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Xml.Serialization;
 
 namespace WMCMovieFolders
@@ -487,46 +489,49 @@ namespace WMCMovieFolders
 
         public static MDRDVD Create(Movie movie, string[] imgnames)
         {
-            bool empty;
-
             bool pg = false;
             StringBuilder genres = new StringBuilder();
-            empty = true;
             foreach (Genre genre in movie.genres)
             {
-                if (!empty)
+                string name = genre.name.Trim();
+                if (genres.Length > 0 && name.Length > 0)
                     genres.Append("; ");
-                genres.Append(genre.name);
-                empty = false;
+                genres.Append(name);
 
-                pg = pg || genre.name.Equals("Family", StringComparison.CurrentCultureIgnoreCase);
+                pg = pg || name.Equals("Family", StringComparison.CurrentCultureIgnoreCase);
             }
 
             string rating = FindRating(movie);
 
             StringBuilder studios = new StringBuilder();
-            empty = true;
             foreach (Studio studio in movie.production_companies)
             {
-                if (!empty)
+                string name = studio.name.Trim();
+                if (studios.Length > 0 && name.Length > 0)
                     studios.Append("; ");
-                studios.Append(studio.name);
-                empty = false;
+                studios.Append(name);
             }
 
-            string performers = (movie.credits.cast.Length != 0 ? movie.credits.cast[0].name : null);
-            if (String.IsNullOrEmpty(performers))
-                performers = "";
+            string performer = (movie.credits.cast.Length != 0 ? movie.credits.cast[0].name : null);
+            //string performer = "";
+            //float popularity = 0.0f;
+            //foreach (Cast member in movie.credits.cast)
+            //    if (member.popularity > popularity)
+            //    {
+            //        performer = member.name;
+            //        popularity = member.popularity;
+            //    }
+            if (String.IsNullOrEmpty(performer))
+                performer = "";
 
             StringBuilder directors = new StringBuilder();
-            empty = true;
             foreach (Crew member in movie.credits.crew)
                 if (member.job.Equals("Director", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    if (!empty)
-                        studios.Append("; ");
-                    directors.Append(member.name);
-                    empty = false;
+                    string name = member.name.Trim();
+                    if (directors.Length > 0 && name.Length > 0)
+                        directors.Append("; ");
+                    directors.Append(name);
                 }
 
 
@@ -534,7 +539,7 @@ namespace WMCMovieFolders
             obj.version = "5.0";
             obj.dvdTitle = movie.title;
             obj.studio = studios.ToString();
-            obj.leadPerformer = performers;
+            obj.leadPerformer = performer;
             obj.director = directors.ToString();
             obj.MPAARating = rating;
             obj.releaseDate = movie.release_date.Replace('-', ' ');
@@ -608,7 +613,7 @@ namespace WMCMovieFolders
         }
 
 
-        static bool FetchData(string url, string filePath)
+        static bool FetchData(int index, string url, string filePath)
         {
             WebClient client = new WebClient();
             client.Headers[HttpRequestHeader.ContentType] = "application/binary";
@@ -635,12 +640,13 @@ namespace WMCMovieFolders
                         }
                     }
                 }
-                Console.WriteLine("Error: {0}", msg);
+                Console.WriteLine("[{0}] Url: {1} -> {2}", index, url, filePath);
+                Console.WriteLine("[{0}] Error: {1}", index, msg);
                 return false;
             }
         }
 
-        static string Fetch(WebClient client, string url)
+        static string Fetch(int index, WebClient client, string url)
         {
             //Console.WriteLine("Fetching {0}", url);
             try
@@ -661,12 +667,13 @@ namespace WMCMovieFolders
                         }
                     }
                 }
-                Console.WriteLine("Error: {0}", msg);
+                Console.WriteLine("[{0}] Url: {1}", index, url);
+                Console.WriteLine("[{0}] Error: {1}", index, msg);
                 return null;
             }
         }
 
-        static string FetchTMDB(string apikey, string query)
+        static string FetchTMDB(int index, string apikey, string query)
         {
             string url = String.Format("https://api.themoviedb.org/3{0}", query);
 
@@ -675,10 +682,10 @@ namespace WMCMovieFolders
             client.Headers[HttpRequestHeader.Authorization] = "Bearer " + apikey;
             //client.BaseAddress = url;
 
-            return Fetch(client, url);
+            return Fetch(index, client, url);
         }
 
-        static string[] FetchPosters(string cover_path, string wmcid, string poster_path)
+        public static string[] FetchPosters(int index, string cover_path, string wmcid, string poster_path)
         {
             string extension = Path.GetExtension(poster_path);
 
@@ -692,8 +699,8 @@ namespace WMCMovieFolders
 
             string[] result = new string[2];
             // skip over already downloaded images
-            result[0] = (File.Exists(filepath_s) ? filename_s : (FetchData(small, filepath_s) ? filename_s : null));
-            result[1] = (File.Exists(filepath_l) ? filename_l : (FetchData(small, filepath_l) ? filename_l : null));
+            result[0] = (File.Exists(filepath_s) ? filename_s : (FetchData(index, small, filepath_s) ? filename_s : null));
+            result[1] = (File.Exists(filepath_l) ? filename_l : (FetchData(index, large, filepath_l) ? filename_l : null));
             // cleanup
             if (result[1] == null && result[0] != null)
                 result[1] = result[0];
@@ -710,7 +717,7 @@ namespace WMCMovieFolders
             new string[] { "#", "%23" }
         };
 
-        static Movie FetchMovie(string apikey, string title, string year)
+        public static Movie FetchMovie(int index, string apikey, string title, string year)
         {
             // encoded away entities for url query parameter
             string encoded = title;
@@ -719,7 +726,7 @@ namespace WMCMovieFolders
 
             // try primary_release_year first
             string query = String.Format("/search/movie?query={0}&include_adult=true&language=en-US&page=1&primary_release_year={1}", encoded, year);
-            string lookup = FetchTMDB(apikey, query);
+            string lookup = FetchTMDB(index, apikey, query);
             if (String.IsNullOrEmpty(lookup))
                 return null;
 
@@ -728,7 +735,7 @@ namespace WMCMovieFolders
             {
                 // try year second
                 query = String.Format("/search/movie?query={0}&include_adult=true&language=en-US&page=1&year={1}", encoded, year);
-                lookup = FetchTMDB(apikey, query);
+                lookup = FetchTMDB(index, apikey, query);
                 if (String.IsNullOrEmpty(lookup))
                     return null;
 
@@ -740,7 +747,7 @@ namespace WMCMovieFolders
             Result result = page.results[0];
 
             string info = String.Format("/movie/{0}?language=en-US&append_to_response=release_dates,credits", result.id);
-            string json = FetchTMDB(apikey, info);
+            string json = FetchTMDB(index, apikey, info);
             if (String.IsNullOrEmpty(json))
                 return null;
 
@@ -748,7 +755,7 @@ namespace WMCMovieFolders
         }
 
 
-        static void WriteXML<T>(T obj, string path)
+        public static void WriteXML<T>(T obj, string path)
         {
             XmlSerializer mySerializer = new XmlSerializer(typeof(T));
             StreamWriter myWriter = new StreamWriter(path);
@@ -797,6 +804,9 @@ namespace WMCMovieFolders
                     case '‽':
                         buf.Append('?');
                         break;
+                    case '⁎':
+                        buf.Append('*');
+                        break;
                     case 'ː':
                         buf.Append(':');
                         break;
@@ -831,10 +841,32 @@ namespace WMCMovieFolders
         //        list.Add(rating);
         //}
 
+        public static string GetAssemblyDotNetVersion(string assemblyFile)
+        {
+            Assembly assembly = Assembly.LoadFrom(assemblyFile);
+            AssemblyName[] references = assembly.GetReferencedAssemblies();
+            AssemblyName version = references.FirstOrDefault(x => x.Name == "System.Runtime");
+            return (version != null ? version.Version.ToString() : "");
+        }
+
+
+
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
             ServicePointManager.SecurityProtocol = Tls12;
+
+            Console.WriteLine("DotNet {0}, {1} Cores", Environment.Version, Environment.ProcessorCount);
+
+            //if (true)
+            //{
+            //    string key = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlOTE1NDE0NGVkNTVmZTE3MjFhNGQyNDY3ZDQ0N2NkOSIsInN1YiI6IjY1YjU4ODU0NThlZmQzMDE3Y2NhYjY0ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zGVfNRR4j_uHhW4_KY6ViAfQSKNqB7RGziDwXjXpvLU";
+            //    string title = "Four Rooms";
+            //    string year = "1995";
+            //    Movie movie = FetchMovie(key, title, year);
+            //    MDRDVD metadata = MDRDVD.Create(movie, new string[] { "1", "2" });
+            //    return;
+            //}
 
             if (args.Length < 3)
             {
@@ -895,6 +927,10 @@ namespace WMCMovieFolders
                 specific = false;
             }
             int count = (specific ? args.Length - 3 : files.Length);
+
+            int THREAD_COUNT = Environment.ProcessorCount;
+            Client[] threads = new Client[Math.Min(THREAD_COUNT, count)];
+
             foreach (string file in files)
             {
                 string folder = Path.GetDirectoryName(file);
@@ -930,7 +966,7 @@ namespace WMCMovieFolders
                         string single = args[i];
                         if (File.Exists(single))
                         {
-                            // trim filepath back top movie title
+                            // trim filepath back to movie title
                             single = Path.GetFileNameWithoutExtension(single);
                         }
                         if (single.Equals(name, StringComparison.CurrentCultureIgnoreCase))
@@ -974,47 +1010,43 @@ namespace WMCMovieFolders
                 }
                 else
                 {
-                    // grab json from TMBD
-                    Movie movie = FetchMovie(apikey, title, year);
-                    if (movie == null)
+                loop:
+
+                    // find thread space to execute client
+                    Client client = null;
+                    for (int i = 0; i < threads.Length; i++)
                     {
-                        Console.WriteLine("Unable to fetch movie '{0}'", title);
-                        missing.Add(title);
-                        continue;
+                        // cleanup client thread if returned
+                        if (threads[i] != null && threads[i].result != null)
+                            threads[i] = null;
+
+                        // execute client thread if space available
+                        if (threads[i] == null)
+                        {
+                            client = threads[i] = new Client(index, covers, wmcids, path, apikey, title, year, missing);
+                            break;
+                        }
                     }
 
-                    //// collect ratings for development
-                    //foreach (Releases releases in movie.release_dates.results)
-                    //    foreach (Release release in releases.release_dates)
-                    //        AddRating(releases.iso_3166_1, release.certification);
-                    
-                    if (!Directory.Exists(path))
+                    // if no space pause a bit and retry
+                    if (client == null)
                     {
-                        DirectoryInfo dir = Directory.CreateDirectory(path);
-                        if (!dir.Exists)
-                            throw new Exception("Could not create movie folder '" + path + "'");
+                        Thread.Sleep(100);
+                        goto loop;
                     }
-
-                    // ensure eHome folders exist
-                    Directory.CreateDirectory(covers);
-                    Directory.CreateDirectory(wmcids);
-
-                    string wmcid = String.Format("wmc_id__{0}", movie.id);
-
-                    string[] imgnames = FetchPosters(covers, wmcid, movie.poster_path);
-                    if (String.IsNullOrEmpty(imgnames[0]) || String.IsNullOrEmpty(imgnames[1]))
-                        Console.WriteLine("Unable to update poster for '{0}'", movie.title);
-
-                    // create xml files....
-                    string dvdxml = Path.Combine(path, String.Format("{0}.dvdid.xml", wmcid));
-                    WriteXML<DVDID>(DVDID.Create(wmcid, title), dvdxml);
-
-                    string wmcxml = Path.Combine(wmcids, String.Format("{0}.xml", wmcid));
-                    WriteXML<WMCID>(WMCID.Create(wmcid, MDRDVD.Create(movie, imgnames)), wmcxml);
                 }
 
                 known = index;
             }
+
+        finish:
+            // wait for all clients to finish
+            for (int i = 0; i < threads.Length; i++)
+                if (threads[i] != null && threads[i].result == null)
+                {
+                    Thread.Sleep(100);
+                    goto finish;
+                }
 
             foreach (string missed in missing)
                 Console.WriteLine("Missed {0}", missed);
@@ -1034,6 +1066,85 @@ namespace WMCMovieFolders
             //}
 
             Console.WriteLine("Done");
+        }
+    }
+
+    public class Client
+    {
+        int index;
+        string covers;
+        string wmcids;
+        string path;
+        string apikey;
+        string title;
+        string year;
+        List<string> missing;
+
+        public bool? result { get; set; }
+        Thread thread;
+
+        public Client(int index, string covers, string wmcids, string path, string apikey, string title, string year, List<string> missing)
+        {
+            this.index = index;
+            this.covers = covers;
+            this.wmcids = wmcids;
+            this.path = path;
+            this.apikey = apikey;
+            this.title = title;
+            this.year = year;
+            this.missing = missing;
+
+            result = null;
+            thread = new Thread(Execute);
+            thread.Start();
+        }
+
+        public void Execute() 
+        {
+            // grab json from TMBD
+            Movie movie = Program.FetchMovie(index, apikey, title, year);
+            if (movie == null)
+            {
+                Console.WriteLine("Unable to fetch movie '{0}'", title);
+                missing.Add(title);
+                result = false;
+                return;
+            }
+
+            //// collect ratings for development
+            //foreach (Releases releases in movie.release_dates.results)
+            //    foreach (Release release in releases.release_dates)
+            //        AddRating(releases.iso_3166_1, release.certification);
+
+            if (!Directory.Exists(path))
+            {
+                DirectoryInfo dir = Directory.CreateDirectory(path);
+                if (!dir.Exists)
+                {
+                    result = false;
+                    throw new Exception("Could not create movie folder '" + path + "'");
+                }
+            }
+
+            // ensure eHome folders exist
+            Directory.CreateDirectory(covers);
+            Directory.CreateDirectory(wmcids);
+
+            string wmcid = String.Format("wmc_id__{0}", movie.id);
+
+            string[] imgnames = Program.FetchPosters(index, covers, wmcid, movie.poster_path);
+            if (String.IsNullOrEmpty(imgnames[0]) || String.IsNullOrEmpty(imgnames[1]))
+                Console.WriteLine("Unable to update poster for '{0}'", movie.title);
+
+            // create xml files....
+            string dvdxml = Path.Combine(path, String.Format("{0}.dvdid.xml", wmcid));
+            Program.WriteXML<DVDID>(DVDID.Create(wmcid, title), dvdxml);
+
+            string wmcxml = Path.Combine(wmcids, String.Format("{0}.xml", wmcid));
+            Program.WriteXML<WMCID>(WMCID.Create(wmcid, MDRDVD.Create(movie, imgnames)), wmcxml);
+
+            result = true;
+            return;
         }
     }
 }
