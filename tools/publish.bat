@@ -18,10 +18,10 @@ IF NOT "%1" == "" (
   )
 ) ELSE (
   FOR /D %%i in (*) DO (ENDLOCAL
-	SET SKIP=
-	IF "%%i" == "Administrator" SET SKIP=1
-	IF "%%i" == "Public" SET SKIP=1
-	IF "%%i" == "nx" SET SKIP=1
+    SET SKIP=
+    IF "%%i" == "Administrator" SET SKIP=1
+    IF "%%i" == "Public" SET SKIP=1
+    IF "%%i" == "nx" SET SKIP=1
     IF DEFINED SKIP (ECHO Skipping %%i) ELSE (CALL :UPDATE %%i)
   )
 )
