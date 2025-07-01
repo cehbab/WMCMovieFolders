@@ -766,7 +766,7 @@ namespace WMCMovieFolders
 
         static void Usage()
         {
-            Console.WriteLine("Usage: {0} srcMovieFolder dstLibraryFolder [/server|API_KEY|apikey.txt] [/startFromNum|individualMovieNames ...]", Environment.CommandLine);
+            Console.WriteLine("Usage: {0} srcMovieFolder [dstLibraryFolder [/server|API_KEY|apikey.txt] [/startFromNum|individualMovieNames ...]]", Environment.CommandLine);
             Environment.Exit (1);
         }
 
@@ -781,42 +781,32 @@ namespace WMCMovieFolders
             return title.Substring(start + 1, end - start - 1);
         }
 
-        //static string FixFilename(string filename)
-        //{
-        //    StringBuilder buf = new StringBuilder();
-        //    foreach (char c in filename)
-        //    {
-        //        if ((int)c > 0xFF)
-        //            buf.Append('~');
-        //        else
-        //            buf.Append(c);
-        //    }
-        //    return buf.ToString();
-        //}
+        static char[][] unicode = new char[][]
+        {
+            new char[] { '‽', '?' },
+            new char[] { '⁎', '*' },
+            new char[] { 'ː', ':' },
+            new char[] { '⁄', '/' }
+        };
+
+        static char? FindUnicode(char c)
+        {
+            foreach (char[] pair in unicode)
+                if (pair[0] == c)
+                    return pair[1];
+            return null;
+        }
 
         static string FixTitle(string filename)
         {
             StringBuilder buf = new StringBuilder();
             foreach (char c in filename)
             {
-                switch (c)
-                {
-                    case '‽':
-                        buf.Append('?');
-                        break;
-                    case '⁎':
-                        buf.Append('*');
-                        break;
-                    case 'ː':
-                        buf.Append(':');
-                        break;
-                    case '~':
-                        buf.Append('/');
-                        break;
-                    default:
-                        buf.Append(c);
-                        break;
-                }
+                char? uni = FindUnicode(c);
+                if (uni != null)
+                    buf.Append(uni);
+                else
+                    buf.Append(c);
             }
             return buf.ToString();
         }
@@ -849,7 +839,28 @@ namespace WMCMovieFolders
             return (version != null ? version.Version.ToString() : "");
         }
 
-
+        static void FindUnicodes(string src)
+        {
+            string extension = ".mp4";
+            string filter = "* (*)" + extension;
+            string[] files = Directory.GetFiles(src, filter, SearchOption.AllDirectories);
+            foreach (string file in files)
+            {
+                char[] buffer = new char[unicode.Length];
+                for (int i = 0; i < unicode.Length; i++)
+                    buffer[i] = ' ';
+                bool found = false;
+                foreach (char c in file)
+                    for (int i = 0; i < unicode.Length; i++)
+                        if (unicode[i][0] == c)
+                        {
+                            buffer[i] = unicode[i][1];
+                            found = true;
+                        }
+                if (found)
+                    Console.WriteLine("[{0}] '{1}'", new string(buffer), file);
+            }
+        }
 
         static void Main(string[] args)
         {
@@ -868,7 +879,17 @@ namespace WMCMovieFolders
             //    return;
             //}
 
-            if (args.Length < 3)
+            if (args.Length == 2 && args[1].Equals("/unicode"))
+            {
+                string path = args[0];
+                if (!Directory.Exists(path))
+                    throw new Exception("Source folder '" + path + "' is invalid!");
+
+                FindUnicodes(path);
+                Console.WriteLine("Done");
+                return;
+            }
+            else if (args.Length < 3)
             {
                 Usage();
                 return;
