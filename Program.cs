@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -714,7 +715,8 @@ namespace WMCMovieFolders
             new string[] { "%", "%25" },
             new string[] { "+", "%2B" },
             new string[] { "&", "%26" },
-            new string[] { "#", "%23" }
+            new string[] { "#", "%23" },
+            new string[] { "/", "%2F" }
         };
 
         public static Movie FetchMovie(int index, string apikey, string title, string year)
@@ -744,9 +746,41 @@ namespace WMCMovieFolders
                     return null;
             }
 
-            Result result = page.results[0];
+            int check = 0;
+            try
+            {
+                check = int.Parse(year);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[{0}] Error with Year ['{1}']", index, year);
+                throw e;
+            }
 
-            string info = String.Format("/movie/{0}?language=en-US&append_to_response=release_dates,credits", result.id);
+            Result match = page.results[0];
+            foreach (Result result in page.results)
+            {
+                // skip unreleased matches
+                if (string.IsNullOrEmpty(result.release_date))
+                    continue;
+
+                try
+                {
+                    DateTime release = DateTime.ParseExact(result.release_date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    if (result.title.Equals(title) && release.Year == check)
+                    {
+                        match = result;
+                        break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("[{0}] Error with Release Date ['{1}']", index, result.release_date);
+                    throw e;
+                }
+            }
+
+            string info = String.Format("/movie/{0}?language=en-US&append_to_response=release_dates,credits", match.id);
             string json = FetchTMDB(index, apikey, info);
             if (String.IsNullOrEmpty(json))
                 return null;
@@ -872,10 +906,20 @@ namespace WMCMovieFolders
             //if (true)
             //{
             //    string key = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlOTE1NDE0NGVkNTVmZTE3MjFhNGQyNDY3ZDQ0N2NkOSIsInN1YiI6IjY1YjU4ODU0NThlZmQzMDE3Y2NhYjY0ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zGVfNRR4j_uHhW4_KY6ViAfQSKNqB7RGziDwXjXpvLU";
-            //    string title = "Four Rooms";
-            //    string year = "1995";
-            //    Movie movie = FetchMovie(key, title, year);
+            //    string title = "Submission";
+            //    string year = "2016";
+            //    Movie movie = FetchMovie(1, key, title, year);
             //    MDRDVD metadata = MDRDVD.Create(movie, new string[] { "1", "2" });
+            //    return;
+            //}
+
+            //if (true)
+            //{
+            //    foreach (string file in Directory.GetFiles("\\\\server\\movies\\Movies", "* (*).mp4", SearchOption.AllDirectories))
+            //    {
+            //        if (file.Contains("(s)"))
+            //            Console.WriteLine("Wrong filename '{0}'", file);
+            //    }
             //    return;
             //}
 
